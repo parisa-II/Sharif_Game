@@ -28,7 +28,7 @@ public class BlockScript : MonoBehaviour
 
     private float MaxNum = 8;
     private float MinNum = 1;
-    private float IncreaseRate = 0.5f;
+    public static float IncreaseRate = 0.5f;
 
     private bool HitEndLine;
 
@@ -168,7 +168,7 @@ public class BlockScript : MonoBehaviour
             SetColor();
         }
 
-        if(this.tag == "BallBlock")
+        if(this.tag == "BallBlock" && collision.gameObject.tag != "Ball")
         {
             Vector2 pos = collision.gameObject.transform.position;
             float X_Diff = Mathf.Abs(transform.position.x - pos.x);
