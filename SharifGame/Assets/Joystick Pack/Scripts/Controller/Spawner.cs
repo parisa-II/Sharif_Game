@@ -27,6 +27,8 @@ public class Spawner : MonoBehaviour
     private float CreateTime;
     private int StarterCounter;
     private float TempTime;
+    private bool ActiveBallBlock;
+    private bool ActiveBombBlock;
 
     void Start()
     {
@@ -34,6 +36,10 @@ public class Spawner : MonoBehaviour
         TempTime = 0f;
         CreateTime = 2.5f;
         StarterCounter = 0;
+
+        ActiveBallBlock = false;
+        ActiveBombBlock = false;
+
         StartCoroutine(CreateBlock1());
         
         StartCoroutine(Timer());
@@ -119,6 +125,18 @@ public class Spawner : MonoBehaviour
         temp_pos.z = 0f;
         Block.transform.localPosition = temp_pos;
         Block.gameObject.SetActive(true);
+        //
+        int rand2 = Random.Range(0, 100);
+        if(!ActiveBallBlock && rand2 < 20)
+        {
+            ActiveBallBlock = true;
+            Block.tag = "BallBlock";
+        }
+        if (!ActiveBombBlock && rand2 > 80)
+        {
+            ActiveBombBlock = true;
+            Block.tag = "Bomb";
+        }
         Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = Random.Range(MinRange, MaxRange).ToString();
         LvlSceneManager.StartNewWave = true;
         LvlSceneManager.BlockCounter++;

@@ -7,6 +7,8 @@ TagManager:
   - End
   - BombArea
   - Bomb
+  - Ball
+  - BallBlock
   layers:
   - Default
   - TransparentFX
@@ -16,8 +18,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Band
+  - Ball
   - 
   - 
   - 

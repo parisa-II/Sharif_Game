@@ -72,6 +72,8 @@ public class BlockScript : MonoBehaviour
             PlayerPrefs.SetInt("TotalScore", PlayerPrefs.GetInt("TotalScore") + 1);
             LvlSceneManager.BlockCounter--;
             audioManager.PlayDestroyBlockClip();
+            if (this.tag == "BallBlock")
+                spawner.SetBall(transform);
             Destroy(gameObject);
         }
 
@@ -90,6 +92,8 @@ public class BlockScript : MonoBehaviour
 
         if (this.tag == "Bomb")
             BlockBG.color = Color.red;
+        if (this.tag == "BallBlock")
+            BlockBG.color = Color.yellow;
     }
 
     IEnumerator StartHit()
@@ -131,5 +135,19 @@ public class BlockScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "End")
             HitEndLine = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ball")
+        {
+            animations.BorderFiring();
+            BlockCounter --;
+            if (BlockCounter < 0)
+                BlockCounter = 0;
+            BlockCounterText.text = BlockCounter.ToString();
+            BlockAnim.Play("BlockShake Animation");
+            SetColor();
+        }
     }
 }
