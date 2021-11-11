@@ -77,7 +77,10 @@ public class BlockScript : MonoBehaviour
             LvlSceneManager.BlockCounter--;
             audioManager.PlayDestroyBlockClip();
             if (this.tag == "BallBlock")
+            {
+                audioManager.PlayHitBallBlockClip();
                 spawner.SetBall(transform);
+            }
             Destroy(gameObject);
         }
 
