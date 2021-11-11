@@ -373,7 +373,7 @@ RectTransform:
   m_LocalScale: {x: 0.53916, y: 0.53916, z: 0.53916}
   m_Children: []
   m_Father: {fileID: 1233694847}
-  m_RootOrder: 21
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 39.894, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5207,13 +5207,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 163428262}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 849121683}
-  m_Father: {fileID: 1233694847}
-  m_RootOrder: 15
+  m_Father: {fileID: 1653563051}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7942,7 +7942,7 @@ RectTransform:
   m_LocalScale: {x: 0.53916, y: 0.53916, z: 0.53916}
   m_Children: []
   m_Father: {fileID: 1233694847}
-  m_RootOrder: 20
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 39.894, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -12776,7 +12776,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1233694847}
-  m_RootOrder: 18
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -13062,7 +13062,6 @@ RectTransform:
   - {fileID: 1661820402}
   - {fileID: 371421457}
   - {fileID: 1476156395}
-  - {fileID: 163428263}
   - {fileID: 1831005528}
   - {fileID: 1885326961}
   - {fileID: 1221745110}
@@ -14593,6 +14592,7 @@ RectTransform:
   - {fileID: 869617240}
   - {fileID: 1872023627}
   - {fileID: 2125952973}
+  - {fileID: 163428263}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14846,7 +14846,7 @@ RectTransform:
   m_LocalScale: {x: 0.53916, y: 0.53916, z: 0.53916}
   m_Children: []
   m_Father: {fileID: 1233694847}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 39.894, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -19819,6 +19819,7 @@ MonoBehaviour:
   IncreaseFireRatio: {fileID: 8300000, guid: d43ac27e272fea842ae8b78e59e16e4d, type: 3}
   BallHitClip: {fileID: 8300000, guid: 7a01feb8099369c42888d94b89126ae4, type: 3}
   HitBallBlockClip: {fileID: 8300000, guid: a85b3240f4757c142b6c919127900470, type: 3}
+  FailClip: {fileID: 0}
 --- !u!1 &1712561595
 GameObject:
   m_ObjectHideFlags: 0
@@ -20091,7 +20092,7 @@ RectTransform:
   m_Children:
   - {fileID: 461135925}
   m_Father: {fileID: 1233694847}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

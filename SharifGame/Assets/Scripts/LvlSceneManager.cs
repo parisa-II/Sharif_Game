@@ -52,6 +52,7 @@ public class LvlSceneManager : MonoBehaviour
         if (IsGameOver)
         {
             Time.timeScale = 0f;
+            audioManager.PlayFailClip();
             GameoverPanel.SetActive(true);
         }
 
@@ -68,6 +69,11 @@ public class LvlSceneManager : MonoBehaviour
     {
         Time.timeScale = 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+    }
+    public void ReplayButton()
+    {
+        Time.timeScale = 1;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Level 1");
     }
     public void PauseButton()
     {
