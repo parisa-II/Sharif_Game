@@ -10,7 +10,8 @@ public class Ball : MonoBehaviour
     public float width, heigh;
 
     private float BallForce = 0.04f;
-    private float MaxVl = 20f;
+    private float MaxVl = 12f;
+    private float MinVl = 11f;
 
     private bool CanBeDestroyed;
 
@@ -35,6 +36,30 @@ public class Ball : MonoBehaviour
         MyRig.velocity = vl;
 
         //
+        float r;
+        if (vl.x >= 0)
+            r = 1f;
+        else
+            r = -1f;
+        if (Mathf.Abs(vl.x) < MinVl)
+            vl.x = MinVl * r;
+
+        if (vl.y >= 0)
+            r = 1f;
+        else
+            r = -1f;
+        if (Mathf.Abs(vl.y) < MinVl)
+            vl.y = MinVl * r;
+
+        //if (vl.x > -MinVl)
+        //    vl.x = -MinVl;
+        //if (vl.y < MinVl)
+        //    vl.y = MinVl;
+        //if (vl.y > -MinVl)
+        //    vl.y = -MinVl;
+        MyRig.velocity = vl;
+
+        //
 
         if (CanBeDestroyed && Fire.IsFiring && Mathf.Abs(Pointer.transform.localPosition.x - transform.localPosition.x) <= Mathf.Abs(width) && Mathf.Abs(Pointer.transform.localPosition.y - transform.localPosition.y) <= Mathf.Abs(heigh))
         {
@@ -44,13 +69,13 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "BombArea")
-        {
-            Destroy(gameObject);
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.tag == "BombArea")
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     IEnumerator WaiteToAllowDestroy()
     {

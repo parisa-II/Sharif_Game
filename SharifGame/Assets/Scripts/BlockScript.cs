@@ -23,8 +23,14 @@ public class BlockScript : MonoBehaviour
 
     private Image BlockBG;
 
-    private Color32 LowColor = new Color32(210, 203, 235, 255);
-    private Color32 HighColor = new Color32(149, 133, 208, 255);
+    private Color32 LowColor_1 = new Color32(204, 248, 255, 255);
+    private Color32 HighColor_1 = new Color32(0, 217, 255, 255);
+    private Color32 LowColor_2 = new Color32(255, 203, 225, 255);
+    private Color32 HighColor_2 = new Color32(255, 50, 137, 255);
+    private Color32 LowColor_3 = new Color32(244, 216, 255, 255);
+    private Color32 HighColor_3 = new Color32(209, 98, 255, 255);
+    private Color32 BombColor = new Color32(248, 92, 69, 255);
+    private Color32 BallBlockColor = Color.yellow; //new Color32(255, 40, 255, 255);
 
     private float MaxNum = 8;
     private float MinNum = 1;
@@ -77,7 +83,10 @@ public class BlockScript : MonoBehaviour
             LvlSceneManager.BlockCounter--;
             audioManager.PlayDestroyBlockClip();
             if (this.tag == "BallBlock")
+            {
+                audioManager.PlayHitBallBlockClip();
                 spawner.SetBall(transform);
+            }
             Destroy(gameObject);
         }
 
@@ -91,13 +100,20 @@ public class BlockScript : MonoBehaviour
     private void SetColor()
     {
         float Ratio = BlockCounter / (70 - MinNum); //MaxNum
-        Color col = Color.Lerp(LowColor, HighColor, Ratio);
+        Color col;
+        if (LvlSceneManager.FireRatio < 5)
+            col = Color.Lerp(LowColor_1, HighColor_1, Ratio);
+        else if (LvlSceneManager.FireRatio < 10)
+            col = Color.Lerp(LowColor_2, HighColor_2, Ratio);
+        else
+            col = Color.Lerp(LowColor_3, HighColor_3, Ratio);
+
         BlockBG.color = col;
 
         if (this.tag == "Bomb")
-            BlockBG.color = Color.red;
+            BlockBG.color = BombColor;
         if (this.tag == "BallBlock")
-            BlockBG.color = Color.yellow;
+            BlockBG.color = BallBlockColor; ;
         if (this.tag == "IncreaserBlock")
             BlockBG.color = Color.grey;
     }
@@ -159,6 +175,7 @@ public class BlockScript : MonoBehaviour
             SetColor();
             }
 
+            audioManager.PlayBallHitClip();
             animations.BorderFiring();
             BlockCounter --;
             if (BlockCounter < 0)
