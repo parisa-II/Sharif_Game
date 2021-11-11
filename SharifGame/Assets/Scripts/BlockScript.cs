@@ -151,7 +151,12 @@ public class BlockScript : MonoBehaviour
         }
 
         Vector2 pos = collision.gameObject.transform.position;
-        if (pos.y > transform.position.y && collision.gameObject.transform.position.y - transform.position.y <= 135)
+        float X_Diff = Mathf.Abs(transform.position.x - pos.x);
+        float Y_Diff = pos.y - transform.position.y;
+        if (X_Diff < 10f && Y_Diff > 0 && Y_Diff < 140f)
+        {
             this.tag = "Untagged";
+            SetColor();
+        }
     }
 }
