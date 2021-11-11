@@ -12,9 +12,12 @@ public class Ball : MonoBehaviour
     private float BallForce = 0.04f;
     private float MaxVl = 24f;
 
+    private bool CanBeDestroyed;
+
     private void Start()
     {
         MyRig.AddForce(new Vector2(BallForce, BallForce));
+        CanBeDestroyed = false;
     }
 
     private void Update()
@@ -32,11 +35,12 @@ public class Ball : MonoBehaviour
 
         //
 
-        //if (Fire.IsFiring && Mathf.Abs(Pointer.transform.localPosition.x - transform.localPosition.x) <= Mathf.Abs(width) && Mathf.Abs(Pointer.transform.localPosition.y - transform.localPosition.y) <= Mathf.Abs(heigh))
-        //{
-        //    //CameraEffects.ShakeOnce();
-        //    Destroy(gameObject);
-        //}
+        if (CanBeDestroyed && Fire.IsFiring && Mathf.Abs(Pointer.transform.localPosition.x - transform.localPosition.x) <= Mathf.Abs(width) && Mathf.Abs(Pointer.transform.localPosition.y - transform.localPosition.y) <= Mathf.Abs(heigh))
+        {
+            //CameraEffects.ShakeOnce();
+            
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -45,5 +49,11 @@ public class Ball : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    IEnumerator WaiteToAllowDestroy()
+    {
+        yield return new WaitForSeconds(1.5f);
+        CanBeDestroyed = true;
     }
 }
