@@ -87,8 +87,8 @@ public class LvlSceneManager : MonoBehaviour
 
     IEnumerator WaitToStartNewWave()
     {
+        NextWaveText.GetComponent<TMPro.TMP_Text>().text = "Wave " + (FireRatio + 1);
         NextWaveText.SetActive(true);
-
         yield return new WaitForSeconds(3f);
         NextWaveText.SetActive(false);
         FireRatio++;

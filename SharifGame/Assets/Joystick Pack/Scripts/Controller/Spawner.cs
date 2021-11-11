@@ -27,22 +27,31 @@ public class Spawner : MonoBehaviour
     private float CreateTime;
     private int StarterCounter;
     private float TempTime;
-    private bool ActiveBallBlock;
-    private bool ActiveBombBlock;
+    private int Increaser_P;
+    private int Bomb_P;
+    private int Ball_P;
+    //private bool ActiveBallBlock;
+    //private bool ActiveBombBlock;
 
     void Start()
     {
         Time = 0f;
         TempTime = 0f;
-        CreateTime = 2.5f;
+        CreateTime = 2f;
         StarterCounter = 0;
+        MinRange = 1;
+        MaxRange = 12;
+        Increaser_P = 0;
+        Bomb_P = 0;
+        Ball_P = 0;
+        BlockScript.IncreaseRate = 0.5f;
 
-        ActiveBallBlock = false;
-        ActiveBombBlock = false;
+        //ActiveBallBlock = false;
+        //ActiveBombBlock = false;
 
         StartCoroutine(CreateBlock1());
         
-        StartCoroutine(Timer());
+        //StartCoroutine(Timer());
         //  FirstSpawner();
         //StartCoroutine(CreateBlock2());
         //SecondSpawner();
@@ -50,28 +59,38 @@ public class Spawner : MonoBehaviour
 
     public void CreateNewBlock()
     {
+        MaxRange = 12 * LvlSceneManager.FireRatio;
+        CreateTime -= 0.2f;// * LvlSceneManager.FireRatio;
+        if (CreateTime < 1)
+            CreateTime = 1;
+
+        Increaser_P = 10 + 5 * (LvlSceneManager.FireRatio - 1);
+        if (Increaser_P > 35)
+            Increaser_P = 35;
+
+        BlockScript.IncreaseRate = 0.5f - 0.05f * (LvlSceneManager.FireRatio - 1);
+        if (BlockScript.IncreaseRate < 0.25f)
+            BlockScript.IncreaseRate = 0.25f;
+
+        if(LvlSceneManager.FireRatio >= 3)
+        {
+            Bomb_P = 10 + 5 * (LvlSceneManager.FireRatio - 3);
+
+            if (Bomb_P > 30)
+                Bomb_P = 30;
+        }
+
+        if (LvlSceneManager.FireRatio >= 5)
+        {
+            Ball_P = 10 + 5 * (LvlSceneManager.FireRatio - 5);
+
+            if (Ball_P > 25)
+                Ball_P = 25;
+        }
+
         StarterCounter = 0;
         StartCoroutine(CreateBlock1());      
     }
-
-    //private void FirstSpawner()
-    //{
-    //    for (int i = 0; i < StartPoses.Length; i++) //ValidNum * ValidNum
-    //    {
-    //        //int _index = i;
-    //        Block = Instantiate(BlockPref, StartPoses[i].transform.position, BlockPref.rotation);
-    //        Block.SetParent(StartPoses[i], false);
-    //        Block.SetParent(Saver.transform, true);
-    //        Vector3 temp_pos = Block.transform.localPosition;
-    //        temp_pos.z = 0f;
-    //        Block.transform.localPosition = temp_pos;
-    //        Block.GetComponent<BlockScript>().Index = i;
-    //        Block.gameObject.SetActive(true);
-    //        Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = Random.Range(MinRange, MaxRange).ToString();
-    //        LvlSceneManager.StartNewWave = true;
-    //        LvlSceneManager.BlockCounter++;
-    //    }
-    //}
 
     public void SetBombExplotion(Transform pos)
     {
@@ -125,24 +144,27 @@ public class Spawner : MonoBehaviour
         temp_pos.z = 0f;
         Block.transform.localPosition = temp_pos;
         Block.gameObject.SetActive(true);
-        //
-        int rand2 = Random.Range(0, 100);
-        if(!ActiveBallBlock && rand2 < 20)
+        Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = Random.Range(MinRange, MaxRange).ToString();
+
+        int rand_increaser = Random.Range(0, 100);
+        if (rand_increaser < Increaser_P)
         {
-            ActiveBallBlock = true;
-            Block.tag = "BallBlock";
-        }
-        if (!ActiveBombBlock && rand2 > 80)
-        {
-            ActiveBombBlock = true;
-            Block.tag = "Bomb";
-        }
-        if (rand2 < 80 && rand2 > 60)
-        {
-            //ActiveBombBlock = true;
             Block.tag = "IncreaserBlock";
         }
-        Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = Random.Range(MinRange, MaxRange).ToString();
+
+        int rand_bomb = Random.Range(0, 100);
+        if (rand_bomb < Bomb_P)
+        {
+            Block.tag = "Bomb";
+            Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "1";
+        }
+
+        int rand_Ball = Random.Range(0, 100);
+        if(rand_Ball < Ball_P)
+        {
+            Block.tag = "BallBlock";
+        }
+
         LvlSceneManager.StartNewWave = true;
         LvlSceneManager.BlockCounter++;
     }
@@ -220,7 +242,7 @@ public class Spawner : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         if (Fire.HoldFire)
             TempTime += 0.2f;
-        if (TempTime >= CreateTime)
+        if (TempTime >= CreateTime && !LvlSceneManager.EndOfWave)//
         {
             SecondFallerSpawner();
             TempTime = 0f;
@@ -230,41 +252,41 @@ public class Spawner : MonoBehaviour
             StartCoroutine(CreateBlock2());
     }
 
-    IEnumerator Timer()
-    {
-        yield return new WaitForSeconds(0.2f);
+    //IEnumerator Timer()
+    //{
+    //    yield return new WaitForSeconds(0.2f);
 
-        if (Fire.HoldFire)
-            Time += 0.2f;
+    //    if (Fire.HoldFire)
+    //        Time += 0.2f;
 
-        switch (Time)
-        {
-            case 20:
-                CreateTime = 2.25f;
-                MaxRange = 35 + 1;
-                MinRange = 15;
-                break;
-            case 40:
-                CreateTime = 2f;
-                MaxRange = 45 + 1;
-                MinRange = 25;
-                break;
-            case 60:
-                CreateTime = 1.75f;
-                MaxRange = 55 + 1;
-                MinRange = 35;
-                break;
-            case 80:
-                CreateTime = 1.25f;
-                MaxRange = 65 + 1;
-                MinRange = 45;
-                break;
-            case 100:
-                CreateTime = 1f;
-                MaxRange = 75 + 1;
-                MinRange = 55;
-                break;
-        }
-        StartCoroutine(Timer());
-    }
+    //    switch (Time)
+    //    {
+    //        case 20:
+    //            CreateTime = 2.25f;
+    //            MaxRange = 35 + 1;
+    //            MinRange = 15;
+    //            break;
+    //        case 40:
+    //            CreateTime = 2f;
+    //            MaxRange = 45 + 1;
+    //            MinRange = 25;
+    //            break;
+    //        case 60:
+    //            CreateTime = 1.75f;
+    //            MaxRange = 55 + 1;
+    //            MinRange = 35;
+    //            break;
+    //        case 80:
+    //            CreateTime = 1.25f;
+    //            MaxRange = 65 + 1;
+    //            MinRange = 45;
+    //            break;
+    //        case 100:
+    //            CreateTime = 1f;
+    //            MaxRange = 75 + 1;
+    //            MinRange = 55;
+    //            break;
+    //    }
+    //    StartCoroutine(Timer());
+    //}
 }
