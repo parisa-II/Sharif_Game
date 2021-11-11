@@ -184,6 +184,7 @@ public class BlockScript : MonoBehaviour
     IEnumerator IncreaseBlockNum()
     {
         BlockCounter++;
+        BlockCounterText.text = BlockCounter.ToString();
         yield return new WaitForSeconds(IncreaseRate);
 
         if(BlockCounter != 0)
