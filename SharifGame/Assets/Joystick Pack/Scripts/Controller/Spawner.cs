@@ -71,8 +71,8 @@ public class Spawner : MonoBehaviour
             Increaser_P = 35;
 
         BlockScript.IncreaseRate = 0.5f - 0.05f * (LvlSceneManager.FireRatio - 1);
-        if (BlockScript.IncreaseRate < 0.25f)
-            BlockScript.IncreaseRate = 0.25f;
+        if (BlockScript.IncreaseRate < 0.2f)
+            BlockScript.IncreaseRate = 0.2f;
 
         if(LvlSceneManager.FireRatio >= 3)
         {
@@ -86,11 +86,11 @@ public class Spawner : MonoBehaviour
         {
             Ball_P = 10 + 5 * (LvlSceneManager.FireRatio - 5);
 
-            if (Ball_P > 25)
-                Ball_P = 25;
+            if (Ball_P > 20)
+                Ball_P = 20;
         }
 
-        if (LvlSceneManager.FireRatio > 16)
+        if (LvlSceneManager.FireRatio > 13)
             blockFallerCounter = 2;
 
         StarterCounter = 0;
@@ -135,10 +135,10 @@ public class Spawner : MonoBehaviour
             Block.gameObject.SetActive(true);
             Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = Random.Range(MinRange, MaxRange).ToString();
 
-            if(LvlSceneManager.FireRatio >= 12) //
+            if(LvlSceneManager.FireRatio >= 11) //
             {
                 int rand_increaser = Random.Range(0, 100);
-                if (rand_increaser < 25) //Increaser_P
+                if (rand_increaser < 30) //Increaser_P
                 {
                     Block.tag = "IncreaserBlock";
                 }
@@ -154,12 +154,16 @@ public class Spawner : MonoBehaviour
         int[] _indexs = new int[blockFallerCounter];
         int rand = Random.Range(0, StartFallPoses.Length);
         _indexs[0] = rand;
-        rand = Random.Range(0, StartFallPoses.Length);
-        while(rand == _indexs[0])
+        if(_indexs.Length > 1)
         {
             rand = Random.Range(0, StartFallPoses.Length);
+            while (rand == _indexs[0])
+            {
+                rand = Random.Range(0, StartFallPoses.Length);
+            }
+            _indexs[1] = rand;
         }
-        _indexs[1] = rand;
+
 
         for (int i = 0; i < blockFallerCounter; i++)
         {       

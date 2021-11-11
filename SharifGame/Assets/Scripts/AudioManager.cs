@@ -58,7 +58,7 @@ public class AudioManager : MonoBehaviour
 
     IEnumerator FireLoop()
     {
-        SoundsAudio.PlayOneShot(FireClip);
+        SoundsAudio.PlayOneShot(FireClip, 0.2f);
         yield return new WaitForSeconds(LvlSceneManager.RateInSecond);
 
         if(IsFiring)

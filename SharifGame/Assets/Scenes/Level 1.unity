@@ -19831,8 +19831,8 @@ MonoBehaviour:
   FireClip: {fileID: 8300000, guid: 7a01feb8099369c42888d94b89126ae4, type: 3}
   DestroyBlockClip: {fileID: 8300000, guid: cdeabcb2661c04643bbfcaa8d82db141, type: 3}
   IncreaseFireRatio: {fileID: 8300000, guid: d43ac27e272fea842ae8b78e59e16e4d, type: 3}
-  BallHitClip: {fileID: 8300000, guid: 7a01feb8099369c42888d94b89126ae4, type: 3}
-  HitBallBlockClip: {fileID: 8300000, guid: a85b3240f4757c142b6c919127900470, type: 3}
+  BallHitClip: {fileID: 8300000, guid: 727448f790e9ae447bdd6c9ff3c70041, type: 3}
+  HitBallBlockClip: {fileID: 8300000, guid: 6672fd752c319104abba92b0dbd3588a, type: 3}
   FailClip: {fileID: 8300000, guid: 0ea853d8f9cf7e14da7fe255df559285, type: 3}
 --- !u!1 &1712561595
 GameObject:
@@ -21431,7 +21431,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -200, y: 150}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!58 &2125952974
 CircleCollider2D:
@@ -21521,5 +21521,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MyRig: {fileID: 2125952975}
   Pointer: {fileID: 1885326960}
-  width: 25
-  heigh: 25
+  width: 30
+  heigh: 30
