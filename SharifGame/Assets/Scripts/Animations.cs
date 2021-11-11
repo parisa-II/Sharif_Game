@@ -5,6 +5,7 @@ using UnityEngine;
 public class Animations : MonoBehaviour
 {
     public Animator PointerAnim;
+    public Animator BorderAnim;
      
     public void PointerFiring()
     {
@@ -13,5 +14,13 @@ public class Animations : MonoBehaviour
     public void PointerIdle()
     {
         PointerAnim.Play("idle");
+    }
+    public void BorderFiring()
+    {
+        BorderAnim.Play("Border Hit Animation");
+    }
+    public void BorderIdle()
+    {
+        BorderAnim.Play("Border Idle Animation");
     }
 }

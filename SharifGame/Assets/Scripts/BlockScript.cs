@@ -8,13 +8,14 @@ public class BlockScript : MonoBehaviour
 {
     private Rigidbody2D MyRigid;
     private Animator BlockAnim;
+    public Animations animations;
+    public AudioManager audioManager;
     public GameObject Pointer;
     public float width, heigh;
     public TMPro.TMP_Text BlockCounterText;
     public Transform DestroyParticlePref;
     public Spawner spawner;
     private int BlockCounter;
-    private float RateInSecond = 0.1f;
     private bool IsHitting;
     private Transform DestroyParticle;
     public GameObject saver;
@@ -56,7 +57,7 @@ public class BlockScript : MonoBehaviour
             if(!IsHitting)
                 StartCoroutine(StartHit());
 
-        if (BlockCounter == 0)
+        if (BlockCounter <= 0)
         {
             DestroyParticle = Instantiate(DestroyParticlePref, Camera.main.ScreenToWorldPoint(transform.localPosition), DestroyParticlePref.rotation);            //DestroyParticle.SetParent(transform, false);
             DestroyParticle.SetParent(transform, false);
@@ -69,6 +70,8 @@ public class BlockScript : MonoBehaviour
             if (PlayerPrefs.GetInt("Record") < Fire.HitedBlock)
                 PlayerPrefs.SetInt("Record", Fire.HitedBlock);
             PlayerPrefs.SetInt("TotalScore", PlayerPrefs.GetInt("TotalScore") + 1);
+            LvlSceneManager.BlockCounter--;
+            audioManager.PlayDestroyBlockClip();
             Destroy(gameObject);
         }
 
@@ -84,6 +87,9 @@ public class BlockScript : MonoBehaviour
         float Ratio = BlockCounter / (70 - MinNum); //MaxNum
         Color col = Color.Lerp(LowColor, HighColor, Ratio);
         BlockBG.color = col;
+
+        if (this.tag == "Bomb")
+            BlockBG.color = Color.red;
     }
 
     IEnumerator StartHit()
@@ -91,12 +97,18 @@ public class BlockScript : MonoBehaviour
         IsHitting = true;
         if (Fire.IsFiring && Mathf.Abs(Pointer.transform.localPosition.x - transform.localPosition.x) <= Mathf.Abs(width) && Mathf.Abs(Pointer.transform.localPosition.y - transform.localPosition.y) <= Mathf.Abs(heigh))
         {
-            CameraEffects.ShakeOnce();
-            BlockCounter--;
+            if (this.tag == "Bomb")
+                spawner.SetBombExplotion(transform);
+
+            //CameraEffects.ShakeOnce();
+            animations.BorderFiring();
+            BlockCounter -= LvlSceneManager.FireRatio;
+            if (BlockCounter < 0)
+                BlockCounter = 0;
             BlockCounterText.text = BlockCounter.ToString();
             BlockAnim.Play("BlockShake Animation");
             SetColor();
-            yield return new WaitForSeconds(RateInSecond);
+            yield return new WaitForSeconds(LvlSceneManager.RateInSecond);
             StartCoroutine(StartHit());
         }
         else
@@ -109,6 +121,10 @@ public class BlockScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "End")
             HitEndLine = true;
+        if (collision.gameObject.tag == "BombArea")
+        {
+            BlockCounter = 0;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)

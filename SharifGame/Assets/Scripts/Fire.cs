@@ -13,6 +13,7 @@ public class Fire : MonoBehaviour
     public FixedJoystick Joystick;
     public Animations animations;
     public Rigidbody2D PointerRig;
+    public AudioManager audioManager;
 
     private float Speed = 3.5f; // 0.035f // 2.2f //400f
     private float Heigh;
@@ -33,7 +34,7 @@ public class Fire : MonoBehaviour
         HoldFire = false;
         Heigh = Screen.height/2;
         Width = Screen.width/2;
-        HitedBlock = 0;    
+        HitedBlock = 0;
     }
 
     
@@ -57,28 +58,13 @@ public class Fire : MonoBehaviour
                 FirstPointerPos = Pointer.transform.localPosition;
                 DiffPos = FirstPointerPos - FirstTouchPos;
                 JoyStickDiffPos = FirstTouchPos;
-
-                //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                //RaycastHit hit;
-                //if (Physics.Raycast(ray, out hit))
-                //{
-                //    print(hit.transform.name);
-                //    //Select stage    
-                //    if (hit.transform.name == "Handle")
-                //    {
-                //        StartFiring();
-                //        FirstTouchPos = touch.position;
-                //        FirstPointerPos = Pointer.transform.localPosition;
-                //        DiffPos = FirstPointerPos - FirstTouchPos;
-                //    }
-                //}
             }
             else if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
                 StopFiring();
                 HoldFire = false;
             }
-            else if(CanMove)// if(CanMove)
+            else if(CanMove)
             {
                 JoyStickDiffPos = touch.position - JoyStickDiffPos;
                 JoyStickDiffPos = JoyStickDiffPos * MoveRatio;
@@ -86,33 +72,6 @@ public class Fire : MonoBehaviour
                 JoyStickDiffPos = touch.position;
             }
         }
-
-
-        //Pointer.transform.localPosition = new Vector3(Joystick.Horizontal * Speed, 450 + Joystick.Vertical * Speed, 0f);
-        //PointerRig.velocity = new Vector3(Joystick.Horizontal * Speed, Joystick.Vertical * Speed, 0f);
-
-
-
-
-        //float sign_x = Mathf.Abs(Pointer.transform.localPosition.x) / Pointer.transform.localPosition.x;
-        //float sign_y = Mathf.Abs(Pointer.transform.localPosition.y) / Pointer.transform.localPosition.y;
-
-        //if (Pointer.transform.localPosition.x >= Width)
-        //{
-        //    PointerRig.velocity = new Vector3(Joystick.Horizontal * Speed * -1f, PointerRig.velocity.y, 0f);
-        //    Pointer.transform.localPosition = new Vector3(Pointer.transform.localPosition.x - 0.1f * sign_x , Pointer.transform.localPosition.y, 0f);
-        //}
-        //else
-        //    PointerRig.velocity = new Vector3(Joystick.Horizontal * Speed, PointerRig.velocity.y, 0f);
-
-        //if (Mathf.Abs(Pointer.transform.localPosition.y) >= Heigh)
-        //{
-        //    PointerRig.velocity = new Vector3(PointerRig.velocity.x, Joystick.Vertical * Speed * -1f, 0f);
-        //    Pointer.transform.localPosition = new Vector3(Pointer.transform.localPosition.x, Pointer.transform.localPosition.y - 0.1f * sign_y, 0f);
-        //}
-        //else
-        //    PointerRig.velocity = new Vector3(PointerRig.velocity.x, Joystick.Vertical * Speed, 0f);
-
     }
 
     private void StartFiring()
@@ -121,11 +80,13 @@ public class Fire : MonoBehaviour
         {
             IsFiring = true;
             animations.PointerFiring();
+            audioManager.PlayFireClip();
         }
     }
     private void StopFiring()
     {
         IsFiring = false;
         animations.PointerIdle();
+        audioManager.StopFireClip();
     }
 }

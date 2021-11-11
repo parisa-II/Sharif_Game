@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - End
+  - BombArea
+  - Bomb
   layers:
   - Default
   - TransparentFX
