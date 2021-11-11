@@ -149,5 +149,9 @@ public class BlockScript : MonoBehaviour
             BlockAnim.Play("BlockShake Animation");
             SetColor();
         }
+
+        Vector2 pos = collision.gameObject.transform.position;
+        if (pos.y > transform.position.y && collision.gameObject.transform.position.y - transform.position.y <= 135)
+            this.tag = "Untagged";
     }
 }

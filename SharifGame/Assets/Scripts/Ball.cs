@@ -18,6 +18,7 @@ public class Ball : MonoBehaviour
     {
         MyRig.AddForce(new Vector2(BallForce, BallForce));
         CanBeDestroyed = false;
+        StartCoroutine(WaiteToAllowDestroy());
     }
 
     private void Update()
