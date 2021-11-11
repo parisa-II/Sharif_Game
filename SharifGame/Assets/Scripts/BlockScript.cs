@@ -28,6 +28,7 @@ public class BlockScript : MonoBehaviour
 
     private float MaxNum = 8;
     private float MinNum = 1;
+    private float IncreaseRate = 0.5f;
 
     private bool HitEndLine;
 
@@ -48,9 +49,12 @@ public class BlockScript : MonoBehaviour
         HitEndLine = false;
         BlockCounter = int.Parse(BlockCounterText.text);
         SetColor();
+
+        if(this.tag == "IncreaserBlock")
+            StartCoroutine(IncreaseBlockNum());
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (Fire.IsFiring)
@@ -94,6 +98,8 @@ public class BlockScript : MonoBehaviour
             BlockBG.color = Color.red;
         if (this.tag == "BallBlock")
             BlockBG.color = Color.yellow;
+        if (this.tag == "IncreaserBlock")
+            BlockBG.color = Color.grey;
     }
 
     IEnumerator StartHit()
@@ -141,6 +147,18 @@ public class BlockScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ball")
         {
+            if (this.tag == "Bomb")
+            {
+                spawner.SetBombExplotion(transform);
+                animations.BorderFiring();
+            BlockCounter -= LvlSceneManager.FireRatio;
+            if (BlockCounter < 0)
+                BlockCounter = 0;
+            BlockCounterText.text = BlockCounter.ToString();
+            BlockAnim.Play("BlockShake Animation");
+            SetColor();
+            }
+
             animations.BorderFiring();
             BlockCounter --;
             if (BlockCounter < 0)
@@ -150,13 +168,25 @@ public class BlockScript : MonoBehaviour
             SetColor();
         }
 
-        Vector2 pos = collision.gameObject.transform.position;
-        float X_Diff = Mathf.Abs(transform.position.x - pos.x);
-        float Y_Diff = pos.y - transform.position.y;
-        if (X_Diff < 10f && Y_Diff > 0 && Y_Diff < 140f)
+        if(this.tag == "BallBlock")
         {
-            this.tag = "Untagged";
-            SetColor();
+            Vector2 pos = collision.gameObject.transform.position;
+            float X_Diff = Mathf.Abs(transform.position.x - pos.x);
+            float Y_Diff = pos.y - transform.position.y;
+            if (X_Diff < 10f && Y_Diff > 0 && Y_Diff < 140f)
+            {
+                this.tag = "Untagged";
+                SetColor();
+            }
         }
+    }
+
+    IEnumerator IncreaseBlockNum()
+    {
+        BlockCounter++;
+        yield return new WaitForSeconds(IncreaseRate);
+
+        if(BlockCounter != 0)
+            StartCoroutine(IncreaseBlockNum());
     }
 }

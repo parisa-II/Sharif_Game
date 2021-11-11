@@ -137,6 +137,11 @@ public class Spawner : MonoBehaviour
             ActiveBombBlock = true;
             Block.tag = "Bomb";
         }
+        if (rand2 < 80 && rand2 > 60)
+        {
+            //ActiveBombBlock = true;
+            Block.tag = "IncreaserBlock";
+        }
         Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = Random.Range(MinRange, MaxRange).ToString();
         LvlSceneManager.StartNewWave = true;
         LvlSceneManager.BlockCounter++;

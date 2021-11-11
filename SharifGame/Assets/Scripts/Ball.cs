@@ -10,7 +10,7 @@ public class Ball : MonoBehaviour
     public float width, heigh;
 
     private float BallForce = 0.04f;
-    private float MaxVl = 24f;
+    private float MaxVl = 20f;
 
     private bool CanBeDestroyed;
 

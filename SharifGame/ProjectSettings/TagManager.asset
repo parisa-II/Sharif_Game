@@ -9,6 +9,7 @@ TagManager:
   - Bomb
   - Ball
   - BallBlock
+  - IncreaserBlock
   layers:
   - Default
   - TransparentFX
