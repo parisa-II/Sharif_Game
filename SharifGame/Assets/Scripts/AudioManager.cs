@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip FireClip;
     public AudioClip DestroyBlockClip;
     public AudioClip IncreaseFireRatio;
+    public AudioClip BallHitClip;
 
     private bool IsFiring;
 
@@ -36,6 +37,11 @@ public class AudioManager : MonoBehaviour
     public void PlayIncreaseFireRatio()
     {
         SoundsAudio.PlayOneShot(IncreaseFireRatio);
+    }
+
+    public void PlayBallHitClip()
+    {
+        SoundsAudio.PlayOneShot(BallHitClip);
     }
 
     IEnumerator FireLoop()

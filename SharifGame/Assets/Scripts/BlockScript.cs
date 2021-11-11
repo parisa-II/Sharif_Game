@@ -159,6 +159,7 @@ public class BlockScript : MonoBehaviour
             SetColor();
             }
 
+            audioManager.PlayBallHitClip();
             animations.BorderFiring();
             BlockCounter --;
             if (BlockCounter < 0)

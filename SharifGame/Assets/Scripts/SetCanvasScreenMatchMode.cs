@@ -15,7 +15,7 @@ public class SetCanvasScreenMatchMode : MonoBehaviour
     {
         lst.Remove(this);
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         cav = GetComponent<CanvasScaler>();
