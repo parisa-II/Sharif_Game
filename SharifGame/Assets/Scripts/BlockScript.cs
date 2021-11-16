@@ -29,7 +29,7 @@ public class BlockScript : MonoBehaviour
     private Color32 HighColor_2 = new Color32(255, 50, 137, 255);
     private Color32 LowColor_3 = new Color32(244, 216, 255, 255);
     private Color32 HighColor_3 = new Color32(209, 98, 255, 255);
-    private Color32 BombColor = new Color32(248, 92, 69, 255);
+    private Color32 BombColor = Color.red; //new Color32(255, 94, 79, 255);
     private Color32 BallBlockColor = Color.yellow; //new Color32(255, 40, 255, 255);
 
     private float MaxNum = 8;

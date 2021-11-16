@@ -30,6 +30,7 @@ public class Spawner : MonoBehaviour
     private int Increaser_P;
     private int Bomb_P;
     private int Ball_P;
+    private int blockFallerCounter;
     //private bool ActiveBallBlock;
     //private bool ActiveBombBlock;
 
@@ -40,6 +41,7 @@ public class Spawner : MonoBehaviour
         CreateTime = 2f;
         StarterCounter = 0;
         MinRange = 1;
+        blockFallerCounter = 1;
         MaxRange = 12;
         Increaser_P = 0;
         Bomb_P = 0;
@@ -69,8 +71,8 @@ public class Spawner : MonoBehaviour
             Increaser_P = 35;
 
         BlockScript.IncreaseRate = 0.5f - 0.05f * (LvlSceneManager.FireRatio - 1);
-        if (BlockScript.IncreaseRate < 0.25f)
-            BlockScript.IncreaseRate = 0.25f;
+        if (BlockScript.IncreaseRate < 0.2f)
+            BlockScript.IncreaseRate = 0.2f;
 
         if(LvlSceneManager.FireRatio >= 3)
         {
@@ -84,9 +86,12 @@ public class Spawner : MonoBehaviour
         {
             Ball_P = 10 + 5 * (LvlSceneManager.FireRatio - 5);
 
-            if (Ball_P > 25)
-                Ball_P = 25;
+            if (Ball_P > 20)
+                Ball_P = 20;
         }
+
+        if (LvlSceneManager.FireRatio > 13)
+            blockFallerCounter = 2;
 
         StarterCounter = 0;
         StartCoroutine(CreateBlock1());      
@@ -129,6 +134,16 @@ public class Spawner : MonoBehaviour
             Block.GetComponent<BlockScript>().Index = i;
             Block.gameObject.SetActive(true);
             Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = Random.Range(MinRange, MaxRange).ToString();
+
+            if(LvlSceneManager.FireRatio >= 11) //
+            {
+                int rand_increaser = Random.Range(0, 100);
+                if (rand_increaser < 30) //Increaser_P
+                {
+                    Block.tag = "IncreaserBlock";
+                }
+            }
+
             LvlSceneManager.StartNewWave = true;
             LvlSceneManager.BlockCounter++;
         }
@@ -136,37 +151,53 @@ public class Spawner : MonoBehaviour
 
     private void SecondFallerSpawner()
     {
+        int[] _indexs = new int[blockFallerCounter];
         int rand = Random.Range(0, StartFallPoses.Length);
-        Block = Instantiate(BlockPref, StartFallPoses[rand].transform.position, BlockPref.rotation);
-        Block.SetParent(StartFallPoses[rand], false);
-        Block.SetParent(Saver.transform, true);
-        Vector3 temp_pos = Block.transform.localPosition;
-        temp_pos.z = 0f;
-        Block.transform.localPosition = temp_pos;
-        Block.gameObject.SetActive(true);
-        Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = Random.Range(MinRange, MaxRange).ToString();
-
-        int rand_increaser = Random.Range(0, 100);
-        if (rand_increaser < Increaser_P)
+        _indexs[0] = rand;
+        if(_indexs.Length > 1)
         {
-            Block.tag = "IncreaserBlock";
+            rand = Random.Range(0, StartFallPoses.Length);
+            while (rand == _indexs[0])
+            {
+                rand = Random.Range(0, StartFallPoses.Length);
+            }
+            _indexs[1] = rand;
         }
 
-        int rand_bomb = Random.Range(0, 100);
-        if (rand_bomb < Bomb_P)
-        {
-            Block.tag = "Bomb";
-            Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "1";
-        }
 
-        int rand_Ball = Random.Range(0, 100);
-        if(rand_Ball < Ball_P)
-        {
-            Block.tag = "BallBlock";
-        }
+        for (int i = 0; i < blockFallerCounter; i++)
+        {       
+            Block = Instantiate(BlockPref, StartFallPoses[_indexs[i]].transform.position, BlockPref.rotation);
+            Block.SetParent(StartFallPoses[_indexs[i]], false);
+            Block.SetParent(Saver.transform, true);
+            Vector3 temp_pos = Block.transform.localPosition;
+            temp_pos.z = 0f;
+            Block.transform.localPosition = temp_pos;
+            Block.gameObject.SetActive(true);
+            Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = Random.Range(MinRange, MaxRange).ToString();
 
-        LvlSceneManager.StartNewWave = true;
-        LvlSceneManager.BlockCounter++;
+            int rand_increaser = Random.Range(0, 100);
+            if (rand_increaser < Increaser_P)
+            {
+                Block.tag = "IncreaserBlock";
+            }
+
+            int rand_bomb = Random.Range(0, 100);
+            if (rand_bomb < Bomb_P)
+            {
+                Block.tag = "Bomb";
+                Block.gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "1";
+            }
+
+            int rand_Ball = Random.Range(0, 100);
+            if (rand_Ball < Ball_P)
+            {
+                Block.tag = "BallBlock";
+            }
+
+            LvlSceneManager.StartNewWave = true;
+            LvlSceneManager.BlockCounter++;
+        }
     }
 
     private void SecondSpawner()

@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip IncreaseFireRatio;
     public AudioClip BallHitClip;
     public AudioClip HitBallBlockClip;
+    public AudioClip FailClip;
 
     private bool IsFiring;
 
@@ -50,9 +51,14 @@ public class AudioManager : MonoBehaviour
         SoundsAudio.PlayOneShot(HitBallBlockClip);
     }
 
+    public void PlayFailClip()
+    {
+        SoundsAudio.PlayOneShot(FailClip);
+    }
+
     IEnumerator FireLoop()
     {
-        SoundsAudio.PlayOneShot(FireClip);
+        SoundsAudio.PlayOneShot(FireClip, 0.2f);
         yield return new WaitForSeconds(LvlSceneManager.RateInSecond);
 
         if(IsFiring)

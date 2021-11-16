@@ -24,9 +24,11 @@ public class LvlSceneManager : MonoBehaviour
     public AudioManager audioManager;
 
     private bool IsPaused;
+    private bool once;
 
     void Start()
     {
+        once = false;
         BlockCounter = 0;
         Time.timeScale = 1f;
         FireRatio = 1;
@@ -49,9 +51,11 @@ public class LvlSceneManager : MonoBehaviour
         ScoreText.text = "Score : " + Fire.HitedBlock;
         TotalScore.text = PlayerPrefs.GetInt("TotalScore").ToString();
 
-        if (IsGameOver)
+        if (IsGameOver && !once)
         {
+            once = true;
             Time.timeScale = 0f;
+            audioManager.PlayFailClip();
             GameoverPanel.SetActive(true);
         }
 
@@ -68,6 +72,11 @@ public class LvlSceneManager : MonoBehaviour
     {
         Time.timeScale = 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+    }
+    public void ReplayButton()
+    {
+        Time.timeScale = 1;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Level 1");
     }
     public void PauseButton()
     {
@@ -89,11 +98,12 @@ public class LvlSceneManager : MonoBehaviour
     {
         NextWaveText.GetComponent<TMPro.TMP_Text>().text = "Wave " + (FireRatio + 1);
         NextWaveText.SetActive(true);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
+        audioManager.PlayIncreaseFireRatio();
+        yield return new WaitForSeconds(1f);
         NextWaveText.SetActive(false);
         FireRatio++;
         FireRatioText.text = "X " + FireRatio;
-        audioManager.PlayIncreaseFireRatio();
         //particle
         //change fire audio
 
